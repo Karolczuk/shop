@@ -1,0 +1,28 @@
+spring:
+
+  application:
+    name: users-service
+
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: create
+    properties:
+      hibernate.dialect: org.hibernate.dialect.MySQL8Dialect
+
+  datasource:
+    url: jdbc:mysql://mysql3:3309/user_db?createDatabaseIfNotExist=true&useSSL=false&allowPublicKeyRetrieval=true
+    username: user
+    password: user1234
+
+server:
+  port: 8100
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://eureka-server:8761/eureka
+  instance:
+    prefer-ip-address: true
+
+    # jesli z jakiegos powoduj euredze server nie uda się nawiązać połączenia z naszym serwisem po naziwe to zrobi to ip

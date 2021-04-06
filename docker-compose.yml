@@ -1,0 +1,121 @@
+version: '3.7'
+
+services:
+
+  #mysql-container:
+  #  image: mysql:latest
+  #  restart: always
+  #  ports:
+  #    - "3306"
+  #  environment:
+  #    - MYSQL_ROOT_PASSWORD=root123
+  #    - MYSQL_DATABASE=test_db
+  #    - MYSQL_USER=user
+  #    - MYSQL_PASSWORD=test123
+  #  networks:
+  #    - microservices-network
+
+  mysql1:
+    image: mysql:latest
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: product_db
+      MYSQL_USER: user
+      MYSQL_PASSWORD: user1234
+      MYSQL_TCP_PORT: 3307
+    networks:
+      - microservices-network
+    ports:
+      - 3307:3307
+    expose:
+      - 3307
+
+  mysql2:
+    image: mysql:latest
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: order_db
+      MYSQL_USER: user
+      MYSQL_PASSWORD: user1234
+      MYSQL_TCP_PORT: 3308
+    networks:
+      - microservices-network
+    ports:
+      - 3308:3308
+    expose:
+      - 3308
+
+  mysql3:
+    image: mysql:latest
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: user_db
+      MYSQL_USER: user
+      MYSQL_PASSWORD: user1234
+      MYSQL_TCP_PORT: 3309
+    networks:
+      - microservices-network
+    ports:
+      - 3309:3309
+    expose:
+      - 3309
+
+  eureka-server:
+    image: eureka-server
+    build:
+      context: ./eureka-server
+      dockerfile: Dockerfile
+    ports:
+      - "8761:8761"
+    restart: always
+    networks:
+      - microservices-network
+
+  users-service:
+    image: users-service
+    build:
+      context: ./users-service
+      dockerfile: Dockerfile
+    ports:
+      - "8100"
+    restart: always
+    networks:
+      - microservices-network
+
+  api-gateway:
+    image: api-gateway
+    build:
+      context: ./api-gateway
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    restart: always
+    networks:
+      - microservices-network
+
+  product-service:
+    image: product-service
+    build:
+      context: ./product-service
+      dockerfile: Dockerfile
+    ports:
+      - "8082:8082"
+    restart: always
+    networks:
+      - microservices-network
+
+  order-service:
+    image: order-service
+    build:
+      context: ./order-service
+      dockerfile: Dockerfile
+    ports:
+      - "8083:8083"
+    restart: always
+    networks:
+      - microservices-network
+
+networks:
+  microservices-network:
+
+
